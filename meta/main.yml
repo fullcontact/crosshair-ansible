@@ -1,0 +1,19 @@
+---
+dependencies:
+  - role: jdauphant.nginx
+    version: v1.3.4
+    nginx_sites:
+      crosshair:
+        - listen 80
+        - location /favico.ico { root /static/images/favicon.ico; }
+        - location /static { alias {{ crosshair_base_dir }}/dist; }
+        - location / {
+            proxy_pass http://localhost:{{ crosshair_gunicorn_port }};
+            proxy_read_timeout {{ crosshair_gunicorn_timeout }}s;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header Host $host;
+            proxy_redirect off;
+          }
+
+  - role: zenoamaro.supervisord
+    version: v0.3.1

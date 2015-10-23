@@ -1,0 +1,17 @@
+#!/bin/sh
+# {{ ansible_managed }}
+
+cd {{ crosshair_base_dir }}
+
+. {{ crosshair_virtualenv }}/bin/activate
+. {{ crosshair_virtualenv }}/bin/postactivate
+
+exec gunicorn \
+    --name crosshair \
+    --workers {{ crosshair_gunicorn_workers }} \
+    --timeout {{ crosshair_gunicorn_timeout }} \
+    --user gunicorn \
+    --group gunicorn \
+    --log-level {{ crosshair_gunicorn_loglevel }} \
+    --bind 127.0.0.1:{{ crosshair_gunicorn_port }} \
+    crosshair.wsgi

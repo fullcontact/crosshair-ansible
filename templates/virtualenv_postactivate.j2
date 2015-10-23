@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# {{ ansible_managed }}
+
+{% for key, value in crosshair_environment.iteritems() %}
+export {{ key }}="{{ value }}"
+{% endfor %}

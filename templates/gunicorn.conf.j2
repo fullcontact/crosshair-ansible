@@ -1,0 +1,7 @@
+; {{ ansible_managed }}
+
+[program:gunicorn]
+command = {{ crosshair_virtualenv }}/bin/gunicorn_start
+user = gunicorn
+stdout_logfile = {{ crosshair_gunicorn_log }}
+redirect_stderr = true

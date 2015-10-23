@@ -1,0 +1,18 @@
+---
+crosshair_version: v0.0.1
+crosshair_download_url: https://github.com/fullcontact/crosshair/releases/{{ crosshair_version }}.tar.gz
+crosshair_install_dir: /opt
+crosshair_base_dir: "{{ crosshair_install_dir }}/crosshair"
+crosshair_virtualenv: "{{ crosshair_base_dir }}/env"
+crosshair_gunicorn_port: 5000
+crosshair_gunicorn_workers: 4
+crosshair_gunicorn_timeout: 120
+crosshair_gunicorn_loglevel: info
+crosshair_gunicorn_log: /var/log/crosshair.log
+crosshair_settings_file: crosshair.settings_production
+crosshair_encryption_key: ""
+crosshair_database_local: no
+crosshair_database_host: ""
+crosshair_database_password: ""
+crosshair_database_password_unencrypted: ""
+crosshair_secret_key: ""
