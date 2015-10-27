@@ -11,7 +11,7 @@ exec gunicorn \
     --workers {{ crosshair_gunicorn_workers }} \
     --timeout {{ crosshair_gunicorn_timeout }} \
     --user gunicorn \
-    --group gunicorn \
+    --group crosshair \
     --log-level {{ crosshair_gunicorn_loglevel }} \
     --bind 127.0.0.1:{{ crosshair_gunicorn_port }} \
     crosshair.wsgi

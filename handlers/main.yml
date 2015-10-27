@@ -2,3 +2,7 @@
 - name: restart gunicorn
   supervisorctl: name=gunicorn state=present
   supervisorctl: name=gunicorn state=restarted
+
+- name: restart celery
+  supervisorctl: name=celery state=present
+  supervisorctl: name=celery state=restarted

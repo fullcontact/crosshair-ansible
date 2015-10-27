@@ -11,32 +11,36 @@
     - libssl-dev
     - libpq-dev
 
-- name: Create the gunicorn group
-  group: name=gunicorn system=yes state=present
-  notify: restart gunicorn
+- name: Create the crosshair group
+  group: name=crosshair system=yes state=present
+  notify:
+    - restart gunicorn
+    - restart celery
 
 - name: Create the gunicorn user
-  user: name=gunicorn group=gunicorn state=present
+  user: name=gunicorn group=crosshair state=present
   notify: restart gunicorn
 
 - name: Download crosshair
   get_url: url={{ crosshair_download_url }} dest={{ crosshair_install_dir }}
-  notify: restart gunicorn
   register: crosshair_download
+  notify:
+    - restart gunicorn
+    - restart celery
 
 - name: Create crosshair directory
   when: crosshair_download.changed
   file: path={{ crosshair_install_dir }}/{{ crosshair_version }}
         state=directory
         owner=gunicorn
-        group=gunicorn
+        group=crosshair
 
 - name: Unarchive crosshair
   when: crosshair_download.changed
   unarchive: src={{ crosshair_install_dir }}/{{ crosshair_version }}.tar.gz
              dest={{ crosshair_install_dir }}/{{ crosshair_version }}
              owner=gunicorn
-             group=gunicorn
+             group=crosshair
              copy=no
 
 - name: Symlink crosshair
@@ -44,22 +48,24 @@
   file: dest={{ crosshair_base_dir }}
         src={{ crosshair_install_dir }}/{{ crosshair_version }}
         owner=gunicorn
-        group=gunicorn
+        group=crosshair
         state=link
 
 - name: Install latest version of pip
   pip: name=pip state=latest virtualenv={{ crosshair_virtualenv }}
 
 - name: Install required python libraries
-  notify: restart gunicorn
   pip: requirements={{ crosshair_install_dir }}/crosshair/requirements.txt
        virtualenv={{ crosshair_virtualenv }}
+  notify:
+    - restart gunicorn
+    - restart celery
 
 - name: Create the virtualenv postactivate script to set environment variables
   template: src=virtualenv_postactivate.j2
             dest={{ crosshair_virtualenv }}/bin/postactivate
             owner=gunicorn
-            group=gunicorn
+            group=crosshair
             mode=0640
             backup=yes
 
@@ -68,7 +74,7 @@
   template: src=gunicorn_start.j2
             dest={{ crosshair_virtualenv }}/bin/gunicorn_start
             owner=gunicorn
-            group=gunicorn
+            group=crosshair
             mode=0755
 
 - name: Copy gunicorn superivsor config
@@ -76,15 +82,14 @@
   template: src=gunicorn.conf.j2
             dest=/etc/supervisor/conf.d/gunicorn.conf
             owner=gunicorn
-            group=gunicorn
+            group=crosshair
             mode=0755
 
 - name: Ensure that the application file permissions are set properly
-  notify: restart gunicorn
   file: path={{ crosshair_install_dir }}/{{ crosshair_version }}
         recurse=yes
         owner=gunicorn
-        group=gunicorn
+        group=crosshair
         state=directory
 
 - name: Run database migrations
@@ -94,4 +99,8 @@
     virtualenv: "{{ crosshair_virtualenv }}"
     settings: "{{ crosshair_settings_file }}"
   environment: crosshair_environment
-  notify: restart gunicorn
+  notify:
+    - restart gunicorn
+    - restart celery
+
+- include: celery.yml

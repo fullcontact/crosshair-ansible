@@ -9,6 +9,7 @@ crosshair_gunicorn_workers: 4
 crosshair_gunicorn_timeout: 120
 crosshair_gunicorn_loglevel: info
 crosshair_gunicorn_log: /var/log/crosshair.log
+crosshair_celery_log: /var/log/celery.log
 crosshair_settings_file: crosshair.settings_production
 crosshair_encryption_key: ""
 crosshair_database_local: no
