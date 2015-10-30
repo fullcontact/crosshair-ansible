@@ -1,7 +1,6 @@
 ---
 crosshair_environment:
   DJANGO_SETTINGS_MODULE: "{{ crosshair_settings_file }}"
-  CROSSHAIR_ENCRYPTION_KEY: "{{ crosshair_encryption_key }}"
   CROSSHAIR_DATABASE_HOST: "{{ crosshair_database_host }}"
   CROSSHAIR_DATABASE_PASSWORD: "{{ crosshair_database_password }}"
   CROSSHAIR_SECRET_KEY: "{{ crosshair_secret_key }}"

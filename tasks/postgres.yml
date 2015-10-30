@@ -22,6 +22,6 @@
   sudo_user: postgres
   postgresql_user: db=crosshair
                    name=crosshair
-                   password={{ crosshair_database_password_unencrypted }}
+                   password={{ crosshair_database_password }}
                    priv=ALL
                    state=present
