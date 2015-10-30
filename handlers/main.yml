@@ -1,8 +1,15 @@
 ---
 - name: restart gunicorn
-  supervisorctl: name=gunicorn state=present
-  supervisorctl: name=gunicorn state=restarted
+  supervisorctl: name={{ item.name }} state={{ item.state }}
+  with_items:
+    - {name: gunicorn, state: present}
+    - {name: gunicorn, state: restarted}
 
 - name: restart celery
-  supervisorctl: name=celery state=present
-  supervisorctl: name=celery state=restarted
+  supervisorctl: name={{ item.name }} state={{ item.state }}
+  with_items:
+    - {name: celery, state: present}
+    - {name: celery, state: restarted}
+    - {name: celery_events, state: present}
+    - {name: celery_events, state: restarted}
+

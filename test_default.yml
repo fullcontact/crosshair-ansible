@@ -1,0 +1,15 @@
+---
+- hosts: all
+  pre_tasks:
+    - apt: force=yes update_cache=yes
+  roles:
+    - .
+
+  vars:
+    crosshair_version: django-test
+    crosshair_download_url: file:///vagrant/{{ crosshair_version }}.tar.gz
+    crosshair_database_password: "password"
+    crosshair_database_host: "localhost"
+    crosshair_secret_key: "CROSSHAIR_DEV_SECRET_KEY"
+    crosshair_database_local: yes
+    crosshair_redis_local: yes

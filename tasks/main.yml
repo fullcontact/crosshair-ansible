@@ -18,7 +18,7 @@
     - restart celery
 
 - name: Create the gunicorn user
-  user: name=gunicorn group=crosshair state=present
+  user: name=gunicorn groups=crosshair append=yes system=yes state=present
   notify: restart gunicorn
 
 - name: Download crosshair
@@ -42,6 +42,12 @@
              owner=gunicorn
              group=crosshair
              copy=no
+
+- name: Update permissions for crosshair directory
+  when: crosshair_download.changed
+  file: path={{ crosshair_install_dir }}/{{ crosshair_version }}
+        mode=0775
+        recurse=yes
 
 - name: Symlink crosshair
   when: crosshair_download.changed
