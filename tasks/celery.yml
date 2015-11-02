@@ -1,6 +1,6 @@
 ---
 - name: Create the celery user
-  user: name=celery group=crosshair state=present
+  user: name=celery groups=crosshair append=yes system=yes state=present
   notify: restart celery
 
 - name: Create the celery script file
@@ -15,6 +15,22 @@
   notify: restart celery
   template: src=celery.conf.j2
             dest=/etc/supervisor/conf.d/celery.conf
+            owner=celery
+            group=crosshair
+            mode=0755
+
+- name: Create the celery events script file
+  notify: restart celery
+  template: src=celery_events_start.j2
+            dest={{ crosshair_virtualenv }}/bin/celery_events_start
+            owner=celery
+            group=crosshair
+            mode=0755
+
+- name: Copy celery events superivsor config
+  notify: restart celery
+  template: src=celery_events.conf.j2
+            dest=/etc/supervisor/conf.d/celery_events.conf
             owner=celery
             group=crosshair
             mode=0755

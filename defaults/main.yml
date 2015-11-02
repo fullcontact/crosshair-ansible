@@ -4,14 +4,23 @@ crosshair_download_url: https://github.com/fullcontact/crosshair/releases/{{ cro
 crosshair_install_dir: /opt
 crosshair_base_dir: "{{ crosshair_install_dir }}/crosshair"
 crosshair_virtualenv: "{{ crosshair_base_dir }}/env"
+
 crosshair_gunicorn_port: 5000
 crosshair_gunicorn_workers: 4
 crosshair_gunicorn_timeout: 120
 crosshair_gunicorn_loglevel: info
 crosshair_gunicorn_log: /var/log/crosshair.log
+
 crosshair_celery_log: /var/log/celery.log
-crosshair_settings_file: crosshair.settings_production
+crosshair_celery_events_log: /var/log/celery_events.log
+
 crosshair_database_local: no
 crosshair_database_host: ""
 crosshair_database_password: ""
+
+crosshair_settings_file: crosshair.settings_production
 crosshair_secret_key: ""
+
+crosshair_redis_local: no
+crosshair_redis_host: "localhost"
+crosshair_redis_port: 6379

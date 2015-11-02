@@ -1,0 +1,10 @@
+; {{ ansible_managed }}
+
+[program:celery_events]
+autostart=true
+autorestart=true
+command = {{ crosshair_virtualenv }}/bin/celery_events_start
+user = celery
+stdout_logfile = {{ crosshair_celery_events_log }}
+stderr_logfile = NONE
+redirect_stderr = true

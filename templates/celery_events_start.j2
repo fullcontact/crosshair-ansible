@@ -1,0 +1,9 @@
+#!/bin/sh
+# {{ ansible_managed }}
+
+cd {{ crosshair_base_dir }}
+
+. {{ crosshair_virtualenv }}/bin/activate
+. {{ crosshair_virtualenv }}/bin/postactivate
+
+exec celery events -A crosshair --camera=djcelery.snapshot.Camera
